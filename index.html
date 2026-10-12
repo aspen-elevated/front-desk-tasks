@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2D5016">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Aspen Tasks">
+<title>Aspen Aesthetics + Wellness — Front Desk Tasks</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232D5016'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div class="demo-bar" id="demoBar" hidden>Demo mode — sample data stored only in this browser. Every demo PIN is <b>1234</b>.</div>
+  <header class="hdr">
+    <div>
+      <h1>Aspen Aesthetics + Wellness</h1>
+      <small>Front Desk Task Tracker</small>
+    </div>
+    <div class="hdr-r">
+      <div class="sync" id="syncStatus"></div>
+      <div class="hd" id="dateDisplay"></div>
+      <button class="uchip" id="userChip" hidden></button>
+    </div>
+  </header>
+  <div class="umenu" id="userMenu" hidden></div>
+
+  <nav class="nav" id="navBar" hidden></nav>
+
+  <main class="mn" id="main"></main>
+</div>
+
+<div class="mo" id="modal"><div class="md" id="modalBody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="mock-api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,7 +1,8 @@
 /**
  * Aspen Front Desk Tasks — backend
  * --------------------------------
- * Bound to the "Aspen Front Desk Tasks" Google Sheet owned by info@aspen-elevated.com.
+ * Bound to the "Aspen Front Desk Tasks" Google Sheet owned by scott@aspen-elevated.com.
+ * setup() shares the Sheet view-only with everyone at aspen-elevated.com.
  * Deployed as a Web App (Execute as: Me, Who has access: Anyone).
  * The GitHub Pages front end talks to this script; every call except
  * staffList/login must carry a session token issued after a PIN check.
@@ -524,7 +525,25 @@ function setup() {
   ScriptApp.newTrigger('generateRecurringTasks').timeBased().everyDays(1).atHour(5).create();
   hashPin_('init'); // makes sure the PIN salt exists
 
-  safeAlert_('Setup complete. Next: use "Aspen Tasks → Set or reset a PIN" for each person.');
+  var shareNote = shareWithDomain_(ss);
+  safeAlert_('Setup complete. ' + shareNote + '\n\nNext: use "Aspen Tasks → Set or reset a PIN" for each person.');
+}
+
+/**
+ * Owner (whoever runs setup — scott@) keeps full edit rights.
+ * Everyone signed in with an @aspen-elevated.com Google account can view the Sheet.
+ * Changes still go through the app (PIN + history), not by editing the Sheet directly.
+ */
+function shareWithDomain_(ss) {
+  try {
+    var file = DriveApp.getFileById(ss.getId());
+    file.setSharing(DriveApp.Access.DOMAIN, DriveApp.Permission.VIEW);
+    file.setShareableByEditors(false);
+    return 'The Sheet is now view-only for everyone at aspen-elevated.com; only the owner can edit it.';
+  } catch (e) {
+    return 'Could not set domain sharing automatically (' + e.message + '). Use Share → General access → ' +
+      'Aspen Elevated → Viewer instead.';
+  }
 }
 
 function menuAddStaff() {

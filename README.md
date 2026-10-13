@@ -3,7 +3,7 @@
 Task tracker for the Aspen Aesthetics + Wellness front desk team. Styled to match the Aspen Inventory Management System.
 
 - **Front end:** this repo, served by GitHub Pages at `https://aspen-elevated.github.io/front-desk-tasks/`
-- **Data:** a Google Sheet in the **info@aspen-elevated.com** Drive, reached through an Apps Script web app (`apps-script/Code.gs`)
+- **Data:** a Google Sheet owned by **scott@aspen-elevated.com**, reached through an Apps Script web app (`apps-script/Code.gs`). Scott can edit it; everyone with an **@aspen-elevated.com** Google account can view it.
 - **Sign-in:** each person picks their name and enters a personal 4–6 digit PIN. PINs are stored hashed, never in plain text. Sessions last 30 days per device; use **Switch user** on the shared front desk computer.
 
 Until `config.js` has an API URL, the site runs in **demo mode** (sample data, kept only in that browser, every PIN is `1234`).
@@ -28,7 +28,7 @@ Until `config.js` has an API URL, the site runs in **demo mode** (sample data, k
 
 ## One-time setup (about 15 minutes)
 
-Do steps 1–3 while signed in to Google as **info@aspen-elevated.com**, so the Sheet and script belong to the shared account rather than a person.
+Do steps 1–3 while signed in to Google as **scott@aspen-elevated.com**, so the Sheet and script belong to Scott. Tip: use a browser window signed in only as scott@ so Google doesn't mix up accounts.
 
 ### 1. Create the Sheet and add the script
 1. In Google Drive, create a blank Google Sheet named **Aspen Front Desk Tasks**.
@@ -38,7 +38,7 @@ Do steps 1–3 while signed in to Google as **info@aspen-elevated.com**, so the 
 5. Save (⌘S / Ctrl+S).
 
 ### 2. Run setup and create PINs
-1. In the Apps Script editor, choose the **setup** function in the toolbar and click **Run**. Approve the permission prompts (Google will warn the app is unverified; choose *Advanced → Go to project*). This creates the tabs, seeds Scott, Misha and Valen as managers, and installs the daily recurring-task trigger.
+1. In the Apps Script editor, choose the **setup** function in the toolbar and click **Run**. Approve the permission prompts (Google will warn the app is unverified; choose *Advanced → Go to project*). This creates the tabs, seeds Scott, Misha and Valen as managers, installs the daily recurring-task trigger, and shares the Sheet **view-only with everyone at aspen-elevated.com** (only Scott can edit or re-share it).
 2. Reload the Sheet. A new **Aspen Tasks** menu appears.
 3. **Aspen Tasks → Set or reset a PIN** for Scott, Misha and Valen.
 4. **Aspen Tasks → Add staff member** for each front desk person (it asks for their PIN right after).
@@ -47,10 +47,10 @@ Do steps 1–3 while signed in to Google as **info@aspen-elevated.com**, so the 
 ### 3. Deploy the web app
 1. In Apps Script: **Deploy → New deployment**.
 2. Gear icon → **Web app**.
-3. *Execute as:* **Me (info@aspen-elevated.com)** · *Who has access:* **Anyone**.
+3. *Execute as:* **Me (scott@aspen-elevated.com)** · *Who has access:* **Anyone**.
 4. **Deploy**, then copy the **Web app URL** (ends in `/exec`).
 
-"Anyone" lets the page reach the script from any device without a Google sign-in. Every request except the name list still needs a valid PIN session, and the Sheet itself stays private to info@.
+"Anyone" lets the page reach the script from any device without a Google sign-in. Every request except the name list still needs a valid PIN session. Don't pick "Anyone within aspen-elevated.com" here: Google then requires a Google sign-in on every call, which the GitHub-hosted page can't do, and the app stops loading.
 
 ### 4. Connect the site
 1. In this repo, edit [`config.js`](config.js) and paste the URL:
@@ -65,6 +65,16 @@ On the front desk computer, bookmark it. On phones, open it in Safari/Chrome and
 
 ---
 
+## Who can see and change what
+
+| | Scott (owner) | Anyone @aspen-elevated.com | Front desk via the app |
+|---|---|---|---|
+| Open the Google Sheet | Edit | View only | — |
+| Change the Apps Script / sharing | Yes | No | — |
+| Add, edit, complete tasks | Yes (app) | — | Yes, with their PIN |
+
+Make day-to-day changes in the app rather than typing in the Sheet, so every change is logged with who made it. If sharing ever needs fixing by hand: Sheet → **Share** → *General access* → **Aspen Elevated** → **Viewer**.
+
 ## Day-to-day admin (from the Sheet's Aspen Tasks menu)
 
 | Need to… | Do this |
@@ -74,6 +84,7 @@ On the front desk computer, bookmark it. On phones, open it in Safari/Chrome and
 | Someone leaves | On the **Staff** tab set **Active** to `FALSE`. They're signed out everywhere and their recurring tasks keep coming, unassigned. |
 | Make someone a manager | On the **Staff** tab change **Role** to `manager` |
 | Shared computer left signed in | *Sign everyone out* |
+| Give another manager edit rights to the Sheet | Sheet → **Share** → add their @aspen-elevated.com address as **Editor** |
 | Recurring tasks didn't appear | *Create today's recurring tasks now* (safe to run twice; it never duplicates) |
 
 Too many wrong PINs locks that name for 15 minutes.
